@@ -53,14 +53,14 @@ func (b *DefaultWorkflowBuilder) BuildCronWorkflow(_ context.Context, test *grid
 			Name:      test.Name,
 			Namespace: test.Namespace,
 			Labels: map[string]string{
-				"the-grid.io/synthetic-test": test.Name,
+				"downlinklabs.io/synthetic-test": test.Name,
 			},
 		},
 		Spec: wfv1.CronWorkflowSpec{
 			Schedules: []string{test.Spec.Schedule},
 			WorkflowMetadata: &metav1.ObjectMeta{
 				Labels: map[string]string{
-					"the-grid.io/synthetic-test": test.Name,
+					"downlinklabs.io/synthetic-test": test.Name,
 				},
 			},
 			WorkflowSpec: workflowSpec,
@@ -80,7 +80,7 @@ func (b *DefaultWorkflowBuilder) BuildWorkflow(_ context.Context, test *gridv1al
 			Name:      test.Name,
 			Namespace: test.Namespace,
 			Labels: map[string]string{
-				"the-grid.io/synthetic-test": test.Name,
+				"downlinklabs.io/synthetic-test": test.Name,
 			},
 		},
 		Spec: workflowSpec,

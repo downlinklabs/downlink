@@ -5,4 +5,4 @@ metadata:
   annotations:
     helm.sh/resource-policy: keep
   labels:
-    {{- include "the-grid-synthetics.labels" . | nindent 4 }}
+    {{- include "downlink.labels" . | nindent 4 }}

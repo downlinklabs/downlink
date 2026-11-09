@@ -3,10 +3,10 @@ name: Chart Lint
 on:
   push:
     paths:
-      - 'charts/**'
+      - "charts/**"
   pull_request:
     paths:
-      - 'charts/**'
+      - "charts/**"
 
 jobs:
   lint-chart:
@@ -16,6 +16,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: azure/setup-helm@v4
       - name: Update dependencies
-        run: helm dependency update charts/the-grid-synthetics
+        run: helm dependency update charts/downlink
       - name: Lint chart
-        run: helm lint charts/the-grid-synthetics
+        run: helm lint charts/downlink

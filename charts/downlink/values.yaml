@@ -15,7 +15,7 @@ runner:
       cpu: 250m
       memory: 512Mi
 
-workloadNamespace: the-grid-synthetics
+workloadNamespace: downlink
 
 argo-workflows:
   enabled: true

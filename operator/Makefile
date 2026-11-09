@@ -28,7 +28,7 @@ BUNDLE_METADATA_OPTS ?= $(BUNDLE_CHANNELS) $(BUNDLE_DEFAULT_CHANNEL)
 # This variable is used to construct full image tags for bundle and catalog images.
 #
 # For example, running 'make bundle-build bundle-push catalog-build catalog-push' will build and push both
-# the-grid.io/synthetics-operator-bundle:$VERSION and the-grid.io/synthetics-operator-catalog:$VERSION.
+# downlinklabs.io/synthetics-operator-bundle:$VERSION and downlinklabs.io/synthetics-operator-catalog:$VERSION.
 IMAGE_TAG_BASE ?= 393657359434.dkr.ecr.us-east-2.amazonaws.com/flynn/synthetics-operator
 
 # BUNDLE_IMG defines the image:tag used for the bundle.

@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "the-grid-synthetics.fullname" . }}
+  name: {{ include "downlink.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "the-grid-synthetics.labels" . | nindent 4 }}
+    {{- include "downlink.labels" . | nindent 4 }}
 spec:
   replicas: 1
   selector:
     matchLabels:
-      {{- include "the-grid-synthetics.selectorLabels" . | nindent 6 }}
+      {{- include "downlink.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "the-grid-synthetics.selectorLabels" . | nindent 8 }}
+        {{- include "downlink.selectorLabels" . | nindent 8 }}
     spec:
-      serviceAccountName: {{ include "the-grid-synthetics.fullname" . }}
+      serviceAccountName: {{ include "downlink.fullname" . }}
       terminationGracePeriodSeconds: 10
       securityContext:
         runAsNonRoot: true
@@ -30,7 +30,7 @@ spec:
             - --leader-elect
             - --health-probe-bind-address=:8081
             - --runner-image={{ .Values.runner.image }}
-            - --pushgateway-url={{ include "the-grid-synthetics.pushgatewayURL" . }}
+            - --pushgateway-url={{ include "downlink.pushgatewayURL" . }}
           securityContext:
             allowPrivilegeEscalation: false
             capabilities:

@@ -15,7 +15,7 @@ jobs:
         run: |
           TAG="${{ github.ref_name }}"
           TAG_VERSION="${TAG#v}"
-          CHART_VERSION=$(grep '^version:' charts/the-grid-synthetics/Chart.yaml | awk '{print $2}')
+          CHART_VERSION=$(grep '^version:' charts/downlink/Chart.yaml | awk '{print $2}')
           if [ "$TAG_VERSION" != "$CHART_VERSION" ]; then
             echo "ERROR: git tag $TAG does not match Chart.yaml version $CHART_VERSION"
             echo "Bump Chart.yaml version to $TAG_VERSION before tagging."
@@ -56,14 +56,14 @@ jobs:
       - uses: azure/setup-helm@v4
 
       - name: Update chart dependencies
-        run: helm dependency update charts/the-grid-synthetics
+        run: helm dependency update charts/downlink
 
       - name: Package chart
-        run: helm package charts/the-grid-synthetics --destination ./dist
+        run: helm package charts/downlink --destination ./dist
 
       - name: Push chart to OCI registry
         run: |
           helm registry login ${{ secrets.REGISTRY_HOST }} \
             --username ${{ secrets.REGISTRY_USERNAME }} \
             --password ${{ secrets.REGISTRY_TOKEN }}
-          helm push ./dist/the-grid-synthetics-*.tgz oci://${{ secrets.REGISTRY_HOST }}/charts
+          helm push ./dist/downlink-*.tgz oci://${{ secrets.REGISTRY_HOST }}/charts

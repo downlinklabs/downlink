@@ -1,5 +1,5 @@
 apiVersion: v2
-name: the-grid-synthetics
+name: downlink
 description: |
   A Helm chart for deploying The Grid Synthetics, a synthetic monitoring solution built on top of Playwright and Argo Workflows. 
   This chart includes components for running synthetic tests, collecting metrics, and visualizing results in Grafana.

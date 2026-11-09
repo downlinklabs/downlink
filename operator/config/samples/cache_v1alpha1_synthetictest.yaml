@@ -5,7 +5,7 @@ metadata:
     app.kubernetes.io/name: synthetics-operator
     app.kubernetes.io/managed-by: kustomize
   name: httbin-synthetic
-  namespace: the-grid-synthetics
+  namespace: downlink
 spec:
   schedule: "*/5 * * * *"
   serviceAccountName: httpbin-synthetic-sa

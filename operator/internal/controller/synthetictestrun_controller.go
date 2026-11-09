@@ -57,7 +57,7 @@ func (r *SyntheticTestRunReconciler) Reconcile(ctx context.Context, req ctrl.Req
 		return ctrl.Result{}, nil
 	}
 
-	testName := workflow.Labels["the-grid.io/synthetic-test"]
+	testName := workflow.Labels["downlinklabs.io/synthetic-test"]
 
 	syntheticTest := &gridv1alpha1.SyntheticTest{}
 	if err := r.Get(ctx, types.NamespacedName{Name: testName, Namespace: workflow.Namespace}, syntheticTest); err != nil {
@@ -142,7 +142,7 @@ func (r *SyntheticTestRunReconciler) SetupWithManager(mgr ctrl.Manager) error {
 			predicate.NewPredicateFuncs(
 				func(object client.Object) bool {
 					labels := object.GetLabels()
-					_, ok := labels["the-grid.io/synthetic-test"]
+					_, ok := labels["downlinklabs.io/synthetic-test"]
 					return ok
 				},
 			),
