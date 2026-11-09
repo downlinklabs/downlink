@@ -1,0 +1,9 @@
+dependencies:
+- name: argo-workflows
+  repository: https://argoproj.github.io/argo-helm
+  version: 0.47.3
+- name: prometheus-pushgateway
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 2.16.0
+digest: sha256:6a8ec1903369452e649b806aa6e4c7d7f4f2793d52330006cc7785acdf4d666c
+generated: "2026-11-04T22:29:46.20707-05:00"

@@ -1,0 +1,23 @@
+apiVersion: v2
+name: the-grid-synthetics
+description: |
+  A Helm chart for deploying The Grid Synthetics, a synthetic monitoring solution built on top of Playwright and Argo Workflows. 
+  This chart includes components for running synthetic tests, collecting metrics, and visualizing results in Grafana.
+type: application
+version: 0.1.2
+appVersion: 0.1.0
+dependencies:
+  - name: argo-workflows
+    condition: argo-workflows.enabled
+    version: "0.47.3"
+    repository: "https://argoproj.github.io/argo-helm"
+    tags:
+      - argo
+      - workflows
+  - name: prometheus-pushgateway
+    condition: pushgateway.enabled
+    version: "2.16.0"
+    repository: https://prometheus-community.github.io/helm-charts
+    tags:
+      - prometheus
+      - pushgateway

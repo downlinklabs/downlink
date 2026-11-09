@@ -1,0 +1,8 @@
+resources:
+- manager.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: controller
+  newName: 393657359434.dkr.ecr.us-east-2.amazonaws.com/flynn/synthetics-operator
+  newTag: 652f37c

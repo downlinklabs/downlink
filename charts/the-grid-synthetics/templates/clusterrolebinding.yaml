@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "the-grid-synthetics.fullname" . }}
+  labels:
+    {{- include "the-grid-synthetics.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "the-grid-synthetics.fullname" . }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "the-grid-synthetics.fullname" . }}
+  namespace: {{ .Release.Namespace }}

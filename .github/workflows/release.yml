@@ -1,0 +1,69 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  validate-version:
+    name: Validate Chart.yaml version matches git tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check version match
+        run: |
+          TAG="${{ github.ref_name }}"
+          TAG_VERSION="${TAG#v}"
+          CHART_VERSION=$(grep '^version:' charts/the-grid-synthetics/Chart.yaml | awk '{print $2}')
+          if [ "$TAG_VERSION" != "$CHART_VERSION" ]; then
+            echo "ERROR: git tag $TAG does not match Chart.yaml version $CHART_VERSION"
+            echo "Bump Chart.yaml version to $TAG_VERSION before tagging."
+            exit 1
+          fi
+          echo "Version $TAG_VERSION matches Chart.yaml — proceeding."
+
+  release:
+    name: Build, push, and publish
+    runs-on: ubuntu-latest
+    needs: validate-version
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Log in to registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.REGISTRY_HOST }}
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_TOKEN }}
+
+      - name: Build and push operator image
+        uses: docker/build-push-action@v6
+        with:
+          context: operator
+          file: operator/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.REGISTRY_HOST }}/downlink/operator:${{ github.ref_name }}
+            ${{ secrets.REGISTRY_HOST }}/downlink/operator:latest
+          platforms: linux/amd64,linux/arm64
+
+      - uses: azure/setup-helm@v4
+
+      - name: Update chart dependencies
+        run: helm dependency update charts/the-grid-synthetics
+
+      - name: Package chart
+        run: helm package charts/the-grid-synthetics --destination ./dist
+
+      - name: Push chart to OCI registry
+        run: |
+          helm registry login ${{ secrets.REGISTRY_HOST }} \
+            --username ${{ secrets.REGISTRY_USERNAME }} \
+            --password ${{ secrets.REGISTRY_TOKEN }}
+          helm push ./dist/the-grid-synthetics-*.tgz oci://${{ secrets.REGISTRY_HOST }}/charts

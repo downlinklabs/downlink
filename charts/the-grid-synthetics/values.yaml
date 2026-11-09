@@ -1,0 +1,33 @@
+operator:
+  image: ""
+  resources:
+    requests:
+      cpu: 10m
+      memory: 64Mi
+    limits:
+      cpu: 500m
+      memory: 128Mi
+
+runner:
+  image: ""
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+
+workloadNamespace: the-grid-synthetics
+
+argo-workflows:
+  enabled: true
+
+pushgateway:
+  enabled: true
+  externalUrl: ""
+
+ui:
+  enabled: false
+
+artifacts:
+  enabled: false
+  bucket: ""
+  region: ""

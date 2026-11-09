@@ -1,0 +1,21 @@
+name: Chart Lint
+
+on:
+  push:
+    paths:
+      - 'charts/**'
+  pull_request:
+    paths:
+      - 'charts/**'
+
+jobs:
+  lint-chart:
+    name: Helm lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+      - name: Update dependencies
+        run: helm dependency update charts/the-grid-synthetics
+      - name: Lint chart
+        run: helm lint charts/the-grid-synthetics
