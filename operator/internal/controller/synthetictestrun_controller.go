@@ -34,10 +34,10 @@ import (
 	gridv1alpha1 "github.com/downlinklabs/downlink/operator/api/v1alpha1"
 )
 
-// +kubebuilder:rbac:groups=thegrid.io,resources=synthetictests,verbs=get;list;watch
-// +kubebuilder:rbac:groups=thegrid.io,resources=synthetictestruns,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=thegrid.io,resources=synthetictestruns/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=thegrid.io,resources=synthetictestruns/finalizers,verbs=update
+// +kubebuilder:rbac:groups=downlinklabs.io,resources=synthetictests,verbs=get;list;watch
+// +kubebuilder:rbac:groups=downlinklabs.io,resources=synthetictestruns,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=downlinklabs.io,resources=synthetictestruns/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=downlinklabs.io,resources=synthetictestruns/finalizers,verbs=update
 // +kubebuilder:rbac:groups=argoproj.io,resources=workflows,verbs=get;list;watch
 
 type SyntheticTestRunReconciler struct {

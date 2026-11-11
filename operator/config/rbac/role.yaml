@@ -45,20 +45,7 @@ rules:
   - create
   - patch
 - apiGroups:
-  - rbac.authorization.k8s.io
-  resources:
-  - rolebindings
-  - roles
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - thegrid.io
+  - downlinklabs.io
   resources:
   - synthetictestruns
   - synthetictests
@@ -71,14 +58,14 @@ rules:
   - update
   - watch
 - apiGroups:
-  - thegrid.io
+  - downlinklabs.io
   resources:
   - synthetictestruns/finalizers
   - synthetictests/finalizers
   verbs:
   - update
 - apiGroups:
-  - thegrid.io
+  - downlinklabs.io
   resources:
   - synthetictestruns/status
   - synthetictests/status
@@ -86,3 +73,16 @@ rules:
   - get
   - patch
   - update
+- apiGroups:
+  - rbac.authorization.k8s.io
+  resources:
+  - rolebindings
+  - roles
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch

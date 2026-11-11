@@ -1,4 +1,4 @@
-apiVersion: thegrid.io/v1alpha1
+apiVersion: downlinklabs.io/v1alpha1
 kind: SyntheticTestRun
 metadata:
   labels:

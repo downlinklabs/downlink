@@ -59,7 +59,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - thegrid.io
+  - downlinklabs.io
   resources:
   - synthetictestruns
   - synthetictests
@@ -72,14 +72,14 @@ rules:
   - update
   - watch
 - apiGroups:
-  - thegrid.io
+  - downlinklabs.io
   resources:
   - synthetictestruns/finalizers
   - synthetictests/finalizers
   verbs:
   - update
 - apiGroups:
-  - thegrid.io
+  - downlinklabs.io
   resources:
   - synthetictestruns/status
   - synthetictests/status

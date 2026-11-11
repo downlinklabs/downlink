@@ -43,9 +43,9 @@ type SyntheticTestReconciler struct {
 	WorkflowBuilder WorkflowBuilder
 }
 
-// +kubebuilder:rbac:groups=thegrid.io,resources=synthetictests,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=thegrid.io,resources=synthetictests/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=thegrid.io,resources=synthetictests/finalizers,verbs=update
+// +kubebuilder:rbac:groups=downlinklabs.io,resources=synthetictests,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=downlinklabs.io,resources=synthetictests/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=downlinklabs.io,resources=synthetictests/finalizers,verbs=update
 // +kubebuilder:rbac:groups="",resources=configmaps,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups="",resources=serviceaccounts,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=rbac.authorization.k8s.io,resources=roles,verbs=get;list;watch;create;update;patch;delete
