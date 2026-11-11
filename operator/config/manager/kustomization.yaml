@@ -5,4 +5,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: 393657359434.dkr.ecr.us-east-2.amazonaws.com/flynn/synthetics-operator
-  newTag: 652f37c
+  newTag: 0.0.12
