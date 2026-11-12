@@ -65,24 +65,24 @@ export default class SyntheticsReporter implements Reporter {
     if (step.parent !== undefined || step.category !== "test.step") return;
 
     this.stepHistogram
-      .labels({
-        test_suite: resolveTestSuite(test),
-        test_name: test.title,
-        step_name: step.title,
-        status: deriveStepStatus(step),
-        environment: process.env["GRID_ENV"] ?? "unknown",
-      })
+      .labels(
+        resolveTestSuite(test),
+        test.title,
+        step.title,
+        deriveStepStatus(step),
+        process.env["GRID_ENV"] ?? "unknown",
+      )
       .observe(step.duration / 1000);
   }
 
   async onTestEnd(test: TestCase, result: TestResult): Promise<void> {
     this.testHistogram
-      .labels({
-        test_suite: resolveTestSuite(test),
-        test_name: test.title,
-        status: deriveTestStatus(result),
-        environment: process.env["GRID_ENV"] ?? "unknown",
-      })
+      .labels(
+        resolveTestSuite(test),
+        test.title,
+        deriveTestStatus(result),
+        process.env["GRID_ENV"] ?? "unknown",
+      )
       .observe(result.duration / 1000);
 
     if (!this.gateway) return;

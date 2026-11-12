@@ -1,4 +1,5 @@
 .PHONY: help \
+  github-docker-login \
   operator-build operator-docker-build operator-docker-push operator-manifests operator-test \
   runner-docker-build runner-docker-push \
   chart-deps chart-lint chart-package \
@@ -9,6 +10,9 @@ RUNNER_IMAGE  ?= $(GHCR_REGISTRY)/playwright-runner
 RUNNER_TAG    ?= $(shell git rev-parse --short HEAD)
 
 help:
+	@echo ""
+	@echo "Auth:"
+	@echo "  github-docker-login    Authenticate Docker to ghcr.io via gh CLI"
 	@echo ""
 	@echo "Operator:"
 	@echo "  operator-build         Build the operator binary"
@@ -38,7 +42,7 @@ operator-build:
 operator-docker-build:
 	$(MAKE) -C operator docker-build
 
-operator-docker-push:
+operator-docker-push: github-docker-login
 	$(MAKE) -C operator docker-push
 
 operator-manifests:
@@ -52,8 +56,10 @@ operator-test:
 runner-docker-build:
 	docker build -f playwright-runner/Dockerfile -t $(RUNNER_IMAGE):$(RUNNER_TAG) -t $(RUNNER_IMAGE):latest .
 
-runner-docker-push: runner-docker-build
+github-docker-login:
 	gh auth token | docker login ghcr.io --username $$(gh api user --jq .login) --password-stdin
+
+runner-docker-push: runner-docker-build github-docker-login
 	docker push $(RUNNER_IMAGE):$(RUNNER_TAG)
 	docker push $(RUNNER_IMAGE):latest
 
