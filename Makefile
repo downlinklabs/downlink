@@ -4,8 +4,8 @@
   chart-deps chart-lint chart-package \
   reporter-build reporter-test
 
-ECR_REGISTRY ?= 393657359434.dkr.ecr.us-east-2.amazonaws.com
-RUNNER_IMAGE  ?= $(ECR_REGISTRY)/flynn/playwright-runner
+GHCR_REGISTRY ?= ghcr.io/downlinklabs
+RUNNER_IMAGE  ?= $(GHCR_REGISTRY)/playwright-runner
 RUNNER_TAG    ?= $(shell git rev-parse --short HEAD)
 
 help:
@@ -53,7 +53,7 @@ runner-docker-build:
 	docker build -f playwright-runner/Dockerfile -t $(RUNNER_IMAGE):$(RUNNER_TAG) -t $(RUNNER_IMAGE):latest .
 
 runner-docker-push: runner-docker-build
-	aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin $(ECR_REGISTRY)
+	gh auth token | docker login ghcr.io --username $$(gh api user --jq .login) --password-stdin
 	docker push $(RUNNER_IMAGE):$(RUNNER_TAG)
 	docker push $(RUNNER_IMAGE):latest
 

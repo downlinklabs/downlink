@@ -35,12 +35,12 @@ jobs:
 
       - uses: docker/setup-buildx-action@v3
 
-      - name: Log in to registry
+      - name: Log in to GHCR
         uses: docker/login-action@v3
         with:
-          registry: ${{ secrets.REGISTRY_HOST }}
-          username: ${{ secrets.REGISTRY_USERNAME }}
-          password: ${{ secrets.REGISTRY_TOKEN }}
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push operator image
         uses: docker/build-push-action@v6
@@ -49,8 +49,8 @@ jobs:
           file: operator/Dockerfile
           push: true
           tags: |
-            ${{ secrets.REGISTRY_HOST }}/downlink/operator:${{ github.ref_name }}
-            ${{ secrets.REGISTRY_HOST }}/downlink/operator:latest
+            ghcr.io/downlinklabs/synthetics-operator:${{ github.ref_name }}
+            ghcr.io/downlinklabs/synthetics-operator:latest
           platforms: linux/amd64,linux/arm64
 
       - uses: azure/setup-helm@v4
@@ -63,7 +63,7 @@ jobs:
 
       - name: Push chart to OCI registry
         run: |
-          helm registry login ${{ secrets.REGISTRY_HOST }} \
-            --username ${{ secrets.REGISTRY_USERNAME }} \
-            --password ${{ secrets.REGISTRY_TOKEN }}
-          helm push ./dist/downlink-*.tgz oci://${{ secrets.REGISTRY_HOST }}/charts
+          helm registry login ghcr.io \
+            --username ${{ github.actor }} \
+            --password ${{ secrets.GITHUB_TOKEN }}
+          helm push ./dist/downlink-*.tgz oci://ghcr.io/downlinklabs/charts
