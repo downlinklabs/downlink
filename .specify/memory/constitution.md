@@ -1,14 +1,9 @@
 <!--
 Sync Impact Report (remove before committing)
 =============================================
-Version change: 1.0.0 → 1.1.0 (MINOR: Principle V materially expanded; Technology Stack and
-Development Workflow updated with new components)
-Modified principles:
-  - V. Observability by Default — now specifies metric names, label schema, Pushgateway push
-    model, and env-var contract for the metrics reporter
-Added content:
-  - Technology Stack: playwright-runner Docker image, @downlink/synthetics npm package
-  - Development Workflow: TypeScript package build and test steps
+Version change: 1.1.0 → 1.2.0 (MINOR: new Design Principles section added with SOLID)
+Added sections:
+  - Design Principles (S, O, L, I, D — each grounded in project-specific examples)
 Removed sections: n/a
 Follow-up TODOs: none
 -->
@@ -83,6 +78,62 @@ profile), and GKE Workload Identity without requiring custom operator builds.
 endpoint, which is necessary for short-lived Argo Workflow pods that complete before a scrape
 interval fires.
 
+## Design Principles
+
+These are the SOLID object-oriented design principles applied to this codebase. They govern how
+code is structured within each component, complementing the operational Core Principles above.
+
+### Single Responsibility
+
+Each type or module MUST have exactly one reason to change.
+
+- The reconciler (`SyntheticTestReconciler`) orchestrates Kubernetes resource creation; it MUST NOT
+  contain workflow-mapping logic.
+- `WorkflowBuilder` translates a `SyntheticTest` spec into an Argo `CronWorkflow` spec; it MUST
+  NOT perform any Kubernetes API calls.
+- `SyntheticsReporter` emits metrics; it MUST NOT contain test scheduling or test-loading logic.
+- Pure functions like `buildArtifactRepositoryYAML` MUST remain side-effect-free; callers own
+  persistence.
+
+### Open/Closed
+
+Components MUST be open for extension and closed for modification.
+
+- New credential strategies (e.g. a future GCP ADC path) MUST be addable to `ArtifactStorageSpec`
+  without changing the reconciler's control flow.
+- New Playwright reporter behaviors MUST be addable via `SyntheticsReporterOptions`; the reporter
+  constructor MUST NOT grow conditional branches for each new option.
+- CRD fields MUST be added additively; removing or retyping a field is a breaking change requiring
+  a MAJOR version bump.
+
+### Liskov Substitution
+
+Concrete implementations MUST be substitutable for their interfaces without altering correctness.
+
+- Any `WorkflowBuilder` implementation (real or test fake) MUST satisfy the same contract: given
+  a valid `SyntheticTest`, return a `CronWorkflow` without side effects.
+- `fakeWorkflowBuilder` in tests MUST behave like the real builder for all inputs the reconciler
+  can produce; test doubles that return impossible states are forbidden.
+
+### Interface Segregation
+
+Interfaces MUST expose only what their callers need.
+
+- `WorkflowBuilder` exposes a single method (`BuildCronWorkflow`); the reconciler MUST NOT depend
+  on a wider interface that includes unrelated build helpers.
+- `SyntheticsReporter` implements only the Playwright `Reporter` hooks it uses (`onStepEnd`,
+  `onTestEnd`); unused lifecycle hooks MUST NOT be stubbed out as no-ops on the exported type.
+
+### Dependency Inversion
+
+High-level modules MUST depend on abstractions, not concretions.
+
+- `SyntheticTestReconciler` MUST accept `WorkflowBuilder` as an interface field, never as a
+  concrete struct, so the implementation can be swapped in tests and future extensions.
+- `SyntheticsReporter` MUST depend on the `prom-client` `Registry` and `Histogram` abstractions;
+  it MUST NOT construct HTTP push clients directly — the `Pushgateway` instance MUST be
+  constructed from the injected registry, keeping the reporter testable without a live endpoint.
+
 ## Technology Stack
 
 - **Language**: Go (operator); TypeScript/Playwright (test payloads and metrics reporter)
@@ -153,4 +204,4 @@ The `CONSTITUTION_VERSION` MUST be incremented following semantic versioning:
 All PRs MUST be reviewed for compliance with the principles above. A PR that violates Principle III
 (Test-First) MUST NOT be merged regardless of other approvals.
 
-**Version**: 1.1.0 | **Ratified**: 2026-11-11 | **Last Amended**: 2026-11-11
+**Version**: 1.2.0 | **Ratified**: 2026-11-11 | **Last Amended**: 2026-11-11
