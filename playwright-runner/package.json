@@ -1,0 +1,34 @@
+{
+  "name": "runner",
+  "version": "0.1.0",
+  "description": "Playwright synthetic test runner",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylanjustice/the-grid.git"
+  },
+  "keywords": [
+    "playwright",
+    "synthetic",
+    "testing"
+  ],
+  "author": "Dylan Justice",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dylanjustice/the-grid/issues"
+  },
+  "homepage": "https://github.com/dylanjustice/the-grid#readme",
+  "devDependencies": {
+    "@types/node": "^25.2.3"
+  },
+  "dependencies": {
+    "@playwright/test": "^1.58.2",
+    "@the-grid/synthetics": "*",
+    "prom-client": "^15.1.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
