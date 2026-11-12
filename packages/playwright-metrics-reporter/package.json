@@ -1,5 +1,5 @@
 {
-  "name": "@the-grid/synthetics",
+  "name": "@downlink/synthetics",
   "version": "0.1.0",
   "type": "module",
   "exports": {

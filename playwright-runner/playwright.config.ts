@@ -25,7 +25,7 @@ export default defineConfig({
   reporter: [
     ["html"],
     [
-      "@the-grid/synthetics/reporter",
+      "@downlink/synthetics/reporter",
       {
         pushgatewayUrl: process.env.PUSHGATEWAY_URL,
         jobName: process.env.GRID_JOB_NAME ?? "synthetic-tests",

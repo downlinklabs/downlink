@@ -230,7 +230,7 @@ var _ = Describe("SyntheticTest Controller (fake builder)", func() {
 				Enabled: true,
 				Bucket:  "iam-bucket",
 				ServiceAccountAnnotations: map[string]string{
-					"eks.amazonaws.com/role-arn": "arn:aws:iam::123456789:role/the-grid-uploader",
+					"eks.amazonaws.com/role-arn": "arn:aws:iam::123456789:role/downlink-uploader",
 				},
 			}
 			cw := newCronWorkflow()
@@ -255,7 +255,7 @@ var _ = Describe("SyntheticTest Controller (fake builder)", func() {
 
 		It("merges ServiceAccountAnnotations onto the created ServiceAccount", func() {
 			st := newSyntheticTest()
-			roleArn := "arn:aws:iam::123456789:role/the-grid-uploader"
+			roleArn := "arn:aws:iam::123456789:role/downlink-uploader"
 			st.Spec.ArtifactStorage = &gridv1alpha1.ArtifactStorageSpec{
 				Enabled: true,
 				Bucket:  "iam-bucket",

@@ -63,7 +63,7 @@ spec:
           args:
             - --leader-elect
             - --health-probe-bind-address=:8081
-            - --pushgateway-url=http://prometheus-prometheus-pushgateway.the-grid-monitoring:9091
+            - --pushgateway-url=http://prometheus-prometheus-pushgateway.downlink-monitoring:9091
             - --runner-image=393657359434.dkr.ecr.us-east-2.amazonaws.com/flynn/playwright-runner-js:796863c
           image: controller:latest
           name: manager

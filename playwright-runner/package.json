@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dylanjustice/the-grid.git"
+    "url": "git+https://github.com/downlinklabs/downlink.git"
   },
   "keywords": [
     "playwright",
@@ -18,15 +18,15 @@
   "author": "Dylan Justice",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dylanjustice/the-grid/issues"
+    "url": "https://github.com/downlinklabs/downlink/issues"
   },
-  "homepage": "https://github.com/dylanjustice/the-grid#readme",
+  "homepage": "https://github.com/downlinklabs/downlink#readme",
   "devDependencies": {
     "@types/node": "^25.2.3"
   },
   "dependencies": {
     "@playwright/test": "^1.58.2",
-    "@the-grid/synthetics": "*",
+    "@downlink/synthetics": "*",
     "prom-client": "^15.1.3",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"

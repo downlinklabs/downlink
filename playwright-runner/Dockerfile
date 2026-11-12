@@ -32,9 +32,9 @@ COPY package.json package-lock.json ./
 COPY packages/synthetics/ ./packages/synthetics/
 COPY runner/package.json ./runner/
 
-RUN npm ci --workspace=runner --workspace=@the-grid/synthetics --include-workspace-root
+RUN npm ci --workspace=runner --workspace=@downlink/synthetics --include-workspace-root
 
-RUN npm run build -w @the-grid/synthetics
+RUN npm run build -w @downlink/synthetics
 
 RUN npx playwright install chromium
 
