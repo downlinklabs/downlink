@@ -71,7 +71,7 @@ chart-package: chart-deps
 ##@ Reporter
 
 reporter-build:
-	cd packages/playwright-metrics-reporter && npm run build
+	cd packages/synthetics && npm run build
 
 reporter-test:
-	cd packages/playwright-metrics-reporter && npm test
+	cd packages/synthetics && npm test

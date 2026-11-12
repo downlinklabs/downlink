@@ -1,0 +1,8 @@
+{
+  "name": "downlink",
+  "private": true,
+  "workspaces": [
+    "packages/synthetics",
+    "playwright-runner"
+  ]
+}

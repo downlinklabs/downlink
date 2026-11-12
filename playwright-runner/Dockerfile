@@ -30,9 +30,9 @@ COPY package.json package-lock.json ./
 
 # Copy workspace packages needed by the runner
 COPY packages/synthetics/ ./packages/synthetics/
-COPY runner/package.json ./runner/
+COPY playwright-runner/package.json ./playwright-runner/
 
-RUN npm ci --workspace=runner --workspace=@downlink/synthetics --include-workspace-root
+RUN npm ci --workspace=playwright-runner --workspace=@downlink/synthetics --include-workspace-root
 
 RUN npm run build -w @downlink/synthetics
 
@@ -47,6 +47,6 @@ COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/packages/synthetics/package.json ./packages/synthetics/package.json
 COPY --from=build /app/packages/synthetics/dist ./packages/synthetics/dist
 COPY --from=build /root/.cache/ms-playwright /root/.cache/ms-playwright
-COPY runner/playwright.config.ts .
+COPY playwright-runner/playwright.config.ts .
 
 CMD ["npx", "playwright", "test"]
