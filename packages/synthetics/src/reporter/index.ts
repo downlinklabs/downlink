@@ -1,4 +1,4 @@
-import { Registry, Histogram, Pushgateway } from "prom-client";
+import { Registry, Histogram, Pushgateway } from "@prometheus-io/client";
 import type {
   Reporter,
   TestCase,
