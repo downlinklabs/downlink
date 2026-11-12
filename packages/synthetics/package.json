@@ -21,7 +21,7 @@
     "@prometheus-io/client": "^0.16.1"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
+    "@types/node": "^22.20.5",
     "typescript": "^5.8.3",
     "vitest": "^3.0.0"
   }
