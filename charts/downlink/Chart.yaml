@@ -4,7 +4,7 @@ description: |
   A Helm chart for deploying The Grid Synthetics, a synthetic monitoring solution built on top of Playwright and Argo Workflows. 
   This chart includes components for running synthetic tests, collecting metrics, and visualizing results in Grafana.
 type: application
-version: 0.1.3
+version: 0.2.0
 appVersion: 0.1.0
 dependencies:
   - name: argo-workflows
