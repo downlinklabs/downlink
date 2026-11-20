@@ -1,4 +1,5 @@
 .PHONY: help \
+  release \
   github-docker-login \
   operator-build operator-docker-build operator-docker-push operator-manifests operator-test \
   runner-docker-build runner-docker-push \
@@ -9,7 +10,12 @@ GHCR_REGISTRY ?= ghcr.io/downlinklabs
 RUNNER_IMAGE  ?= $(GHCR_REGISTRY)/playwright-runner
 RUNNER_TAG    ?= $(shell git rev-parse --short HEAD)
 
+BUMP ?= minor
+
 help:
+	@echo ""
+	@echo "Release:"
+	@echo "  release                Bump version, tag, and push (BUMP=major|minor|patch, default: minor)"
 	@echo ""
 	@echo "Auth:"
 	@echo "  github-docker-login    Authenticate Docker to ghcr.io via gh CLI"
@@ -33,6 +39,27 @@ help:
 	@echo "Reporter:"
 	@echo "  reporter-build         Build @downlink/synthetics"
 	@echo "  reporter-test          Run @downlink/synthetics tests"
+
+##@ Release
+
+release:
+	@current=$$(grep '^version:' charts/downlink/Chart.yaml | awk '{print $$2}'); \
+	major=$$(echo $$current | cut -d. -f1); \
+	minor=$$(echo $$current | cut -d. -f2); \
+	patch=$$(echo $$current | cut -d. -f3); \
+	case "$(BUMP)" in \
+	  major) major=$$((major+1)); minor=0; patch=0 ;; \
+	  minor) minor=$$((minor+1)); patch=0 ;; \
+	  patch) patch=$$((patch+1)) ;; \
+	  *) echo "Usage: make release BUMP=major|minor|patch"; exit 1 ;; \
+	esac; \
+	next="$$major.$$minor.$$patch"; \
+	perl -pi -e "s/^version: .*/version: $$next/" charts/downlink/Chart.yaml; \
+	git add charts/downlink/Chart.yaml; \
+	git commit -m "Release v$$next"; \
+	git tag "v$$next"; \
+	git push && git push --tags; \
+	echo "Released v$$next"
 
 ##@ Operator
 
