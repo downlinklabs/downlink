@@ -1,5 +1,5 @@
 .PHONY: help \
-  release \
+  release release-runner \
   github-docker-login \
   operator-build operator-docker-build operator-docker-push operator-manifests operator-test \
   runner-docker-build runner-docker-push \
@@ -15,7 +15,8 @@ BUMP ?= minor
 help:
 	@echo ""
 	@echo "Release:"
-	@echo "  release                Bump version, tag, and push (BUMP=major|minor|patch, default: minor)"
+	@echo "  release                Bump chart/operator version, tag, and push (BUMP=major|minor|patch, default: minor)"
+	@echo "  release-runner         Bump runner version, tag, and push (BUMP=major|minor|patch, default: minor)"
 	@echo ""
 	@echo "Auth:"
 	@echo "  github-docker-login    Authenticate Docker to ghcr.io via gh CLI"
@@ -60,6 +61,25 @@ release:
 	git tag "v$$next"; \
 	git push && git push --tags; \
 	echo "Released v$$next"
+
+release-runner:
+	@current=$$(node -p "require('./playwright-runner/package.json').version"); \
+	major=$$(echo $$current | cut -d. -f1); \
+	minor=$$(echo $$current | cut -d. -f2); \
+	patch=$$(echo $$current | cut -d. -f3); \
+	case "$(BUMP)" in \
+	  major) major=$$((major+1)); minor=0; patch=0 ;; \
+	  minor) minor=$$((minor+1)); patch=0 ;; \
+	  patch) patch=$$((patch+1)) ;; \
+	  *) echo "Usage: make release-runner BUMP=major|minor|patch"; exit 1 ;; \
+	esac; \
+	next="$$major.$$minor.$$patch"; \
+	npm version $$next --prefix playwright-runner --no-git-tag-version; \
+	git add playwright-runner/package.json; \
+	git commit -m "Release runner v$$next"; \
+	git tag "runner-v$$next"; \
+	git push && git push --tags; \
+	echo "Released runner v$$next"
 
 ##@ Operator
 

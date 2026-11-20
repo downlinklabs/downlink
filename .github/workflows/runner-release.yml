@@ -2,13 +2,8 @@ name: Runner Release
 
 on:
   push:
-    branches:
-      - main
-    paths:
-      - playwright-runner/**
-      - packages/synthetics/**
-      - package.json
-      - package-lock.json
+    tags:
+      - "runner-v*.*.*"
   workflow_dispatch:
 
 jobs:
@@ -37,6 +32,6 @@ jobs:
           file: playwright-runner/Dockerfile
           push: true
           tags: |
-            ghcr.io/downlinklabs/playwright-runner:${{ github.sha }}
+            ghcr.io/downlinklabs/playwright-runner:${{ github.ref_name }}
             ghcr.io/downlinklabs/playwright-runner:latest
           platforms: linux/amd64
