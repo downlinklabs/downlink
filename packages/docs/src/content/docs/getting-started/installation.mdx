@@ -1,0 +1,54 @@
+---
+title: Installation
+description: Install the downlink operator and synthetics package.
+---
+
+import { Steps, Tabs, TabItem } from "@astrojs/starlight/components";
+
+downlink has two parts: the **operator** that runs in your Kubernetes cluster, and the **synthetics** package you add to your test project.
+
+## Prerequisites
+
+- Kubernetes cluster (1.26+)
+- `kubectl` configured for your cluster
+- Node.js 18+
+
+## Install the operator
+
+<Steps>
+
+1. **Apply the operator manifests**
+
+   ```bash
+   kubectl apply -f https://github.com/downlinklabs/downlink/releases/latest/download/operator.yaml
+   ```
+
+2. **Verify the operator is running**
+
+   ```bash
+   kubectl get pods -n downlink-system
+   ```
+
+   You should see the operator pod in a `Running` state.
+
+</Steps>
+
+## Install the synthetics package
+
+Add `@downlink/synthetics` to your test project:
+
+<Tabs>
+  <TabItem label="npm">```bash npm install @downlink/synthetics ```</TabItem>
+  <TabItem label="pnpm">```bash pnpm add @downlink/synthetics ```</TabItem>
+  <TabItem label="yarn">```bash yarn add @downlink/synthetics ```</TabItem>
+</Tabs>
+
+The package is published to the GitHub Package Registry under `@downlink/synthetics`. If you haven't already, configure npm to resolve `@downlink` packages from GitHub:
+
+```bash
+echo "@downlink:registry=https://npm.pkg.github.com" >> .npmrc
+```
+
+## Next steps
+
+Once installed, follow the [Quick Start](/getting-started/quick-start/) guide to write and run your first synthetic test.

@@ -15,5 +15,5 @@ run them in your cluster, monitor them with your tools, as often as you want, fo
 
 ## Get Started
 
-- [Get downlink]()
-- [Installation guide]()
+- [Introduction](https://docs.downlinklabs.io/getting-started/introduction/)
+- [Installation guide](https://docs.downlinklabs.io/getting-started/installation/)

@@ -1,0 +1,33 @@
+---
+title: downlink
+description: Test, measure and operationalize critical user paths with tools you're already using.
+template: splash
+hero:
+  tagline: Synthetic testing for developers who value reliability.
+  actions:
+    - text: Get Started
+      link: /getting-started/introduction/
+      icon: right-arrow
+    - text: Installation
+      link: /getting-started/installation/
+      icon: external
+      variant: minimal
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+<CardGrid stagger>
+  <Card title="GitOps-native" icon="github">
+    Wire Playwright tests directly into your existing CI/CD workflows.
+  </Card>
+  <Card title="Flexible scheduling" icon="rocket">
+    Run on a POSIX cron schedule, on demand, or in response to events.
+  </Card>
+  <Card title="Observability built-in" icon="bars">
+    Push metrics to any Prometheus-compatible or OTLP backend.
+  </Card>
+  <Card title="SLOs on critical paths" icon="approve-check-circle">
+    Define and track service level objectives based on real user journey
+    metrics.
+  </Card>
+</CardGrid>

@@ -1,0 +1,82 @@
+---
+title: Quick Start
+description: Write and run your first downlink synthetic test.
+---
+
+import { Steps } from "@astrojs/starlight/components";
+
+This guide walks you through writing your first synthetic test and deploying it to your cluster.
+
+## Prerequisites
+
+- downlink operator installed (see [Installation](/getting-started/installation/))
+- `@downlink/synthetics` added to your project
+
+<Steps>
+
+1. **Write a synthetic test**
+
+   Create a file `tests/checkout.spec.ts`:
+
+   ```ts
+   import { test, expect } from "@downlink/synthetics";
+
+   test("user can complete checkout", async ({ page }) => {
+     await page.goto("https://your-app.example.com");
+     await page.getByRole("button", { name: "Add to cart" }).click();
+     await page.getByRole("link", { name: "Checkout" }).click();
+     await expect(page.getByText("Order confirmed")).toBeVisible();
+   });
+   ```
+
+2. **Configure the Playwright project**
+
+   In `playwright.config.ts`, use the downlink reporter:
+
+   ```ts
+   import { defineConfig } from "@downlink/synthetics";
+
+   export default defineConfig({
+     reporter: [["@downlink/synthetics/reporter"]],
+     use: {
+       baseURL: process.env.BASE_URL,
+     },
+   });
+   ```
+
+3. **Create a SyntheticTest resource**
+
+   Apply a Kubernetes manifest to schedule your test:
+
+   ```yaml
+   apiVersion: downlink.io/v1alpha1
+   kind: SyntheticTest
+   metadata:
+     name: checkout-flow
+   spec:
+     schedule: "*/5 * * * *" # every 5 minutes
+     image: ghcr.io/your-org/your-tests:latest
+     testFile: tests/checkout.spec.ts
+     annotations:
+       service: checkout
+       team: platform
+   ```
+
+   ```bash
+   kubectl apply -f synthetic-test.yaml
+   ```
+
+4. **Watch it run**
+
+   ```bash
+   kubectl get synthetictests
+   kubectl describe synthetictest checkout-flow
+   ```
+
+</Steps>
+
+## Viewing results
+
+Results are emitted as Prometheus metrics and available via your existing dashboards. Failed runs store screenshots and Playwright traces as Kubernetes artifacts.
+
+For metric names and labels, see the [Reference](/reference/).

@@ -4,7 +4,8 @@
   operator-build operator-docker-build operator-docker-push operator-manifests operator-test \
   runner-docker-build runner-docker-push \
   chart-deps chart-lint chart-package \
-  reporter-build reporter-test
+  reporter-build reporter-test \
+  docs-dev docs-build
 
 GHCR_REGISTRY ?= ghcr.io/downlinklabs
 RUNNER_IMAGE  ?= $(GHCR_REGISTRY)/playwright-runner
@@ -40,6 +41,10 @@ help:
 	@echo "Reporter:"
 	@echo "  reporter-build         Build @downlink/synthetics"
 	@echo "  reporter-test          Run @downlink/synthetics tests"
+	@echo ""
+	@echo "Docs:"
+	@echo "  docs-dev               Start the docs dev server"
+	@echo "  docs-build             Build the docs site"
 
 ##@ Release
 
@@ -128,3 +133,11 @@ reporter-build:
 
 reporter-test:
 	cd packages/synthetics && npm test
+
+##@ Docs
+
+docs-dev:
+	cd packages/docs && npm run dev
+
+docs-build:
+	cd packages/docs && npm run build
