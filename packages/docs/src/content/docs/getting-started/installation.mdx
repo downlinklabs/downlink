@@ -1,37 +1,86 @@
 ---
 title: Installation
-description: Install the downlink operator and synthetics package.
+description: Install downlink into your Kubernetes cluster using Helm.
 ---
 
-import { Steps, Tabs, TabItem, Code } from "@astrojs/starlight/components";
+import { Steps, Tabs, TabItem } from '@astrojs/starlight/components';
 
-downlink has two parts: the **operator** that runs in your Kubernetes cluster, and the **synthetics** package you add to your test project.
+downlink is installed into your Kubernetes cluster using Helm. The chart deploys the operator, Argo Workflows, and a Prometheus Pushgateway.
 
 ## Prerequisites
 
 - Kubernetes cluster (1.26+)
+- Helm 3.x
 - `kubectl` configured for your cluster
-- Node.js 18+
 
-## Install the operator
+## Install
 
 <Steps>
 
-1. **Apply the operator manifests**
+1. **Add the Helm repository**
 
    ```bash
-   kubectl apply -f https://github.com/downlinklabs/downlink/releases/latest/download/operator.yaml
+   helm repo add downlink https://downlinklabs.github.io/downlink
+   helm repo update
    ```
 
-2. **Verify the operator is running**
+2. **Install the chart**
 
    ```bash
-   kubectl get pods -n downlink-system
+   helm install downlink downlink/downlink \
+     --namespace downlink \
+     --create-namespace
+   ```
+
+3. **Verify the operator is running**
+
+   ```bash
+   kubectl get pods -n downlink
    ```
 
    You should see the operator pod in a `Running` state.
 
 </Steps>
+
+## Configuration
+
+Key values you can override with `--set` or a `values.yaml` file:
+
+| Value | Description | Default |
+|-------|-------------|---------|
+| `operator.image` | Operator image to use | `""` |
+| `runner.image` | Runner image for test execution | `""` |
+| `workloadNamespace` | Namespace where test workloads run | `downlink` |
+| `argo-workflows.enabled` | Deploy Argo Workflows as a dependency | `true` |
+| `pushgateway.enabled` | Deploy Prometheus Pushgateway | `true` |
+| `pushgateway.externalUrl` | External URL of an existing Pushgateway | `""` |
+| `artifacts.enabled` | Enable screenshot/trace artifact storage | `false` |
+| `artifacts.bucket` | S3 bucket name for artifacts | `""` |
+| `artifacts.region` | S3 bucket region | `""` |
+
+### Use an existing Argo Workflows or Pushgateway
+
+If you already have Argo Workflows or a Pushgateway in your cluster, disable the bundled ones and point downlink at your existing instances:
+
+```yaml
+argo-workflows:
+  enabled: false
+
+pushgateway:
+  enabled: false
+  externalUrl: "http://prometheus-pushgateway.monitoring.svc.cluster.local:9091"
+```
+
+### Enable artifact storage
+
+To capture screenshots and Playwright traces on failure, enable artifact storage with an S3-compatible bucket:
+
+```yaml
+artifacts:
+  enabled: true
+  bucket: my-downlink-artifacts
+  region: us-east-1
+```
 
 ## Install the synthetics package
 
@@ -39,17 +88,23 @@ Add `@downlink/synthetics` to your test project:
 
 <Tabs>
   <TabItem label="npm">
-    <Code lang="bash" code="npm install @downlink/synthetics" />
+    ```bash
+    npm install @downlink/synthetics
+    ```
   </TabItem>
   <TabItem label="pnpm">
-    <Code lang="bash" code="pnpm add @downlink/synthetics" />
+    ```bash
+    pnpm add @downlink/synthetics
+    ```
   </TabItem>
   <TabItem label="yarn">
-    <Code lang="bash" code="yarn add @downlink/synthetics" />
+    ```bash
+    yarn add @downlink/synthetics
+    ```
   </TabItem>
 </Tabs>
 
-The package is published to the GitHub Package Registry under `@downlink/synthetics`. If you haven't already, configure npm to resolve `@downlink` packages from GitHub:
+The package is published to the GitHub Package Registry. Configure npm to resolve `@downlink` packages from GitHub:
 
 ```bash
 echo "@downlink:registry=https://npm.pkg.github.com" >> .npmrc
@@ -57,4 +112,4 @@ echo "@downlink:registry=https://npm.pkg.github.com" >> .npmrc
 
 ## Next steps
 
-Once installed, follow the [Quick Start](/getting-started/quick-start/) guide to write and run your first synthetic test.
+Follow the [Quick Start](/getting-started/quick-start/) guide to write and run your first synthetic test.
