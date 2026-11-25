@@ -1,0 +1,42 @@
+name: Synthetics Release
+
+on:
+  push:
+    tags:
+      - "synthetics-v*.*.*"
+  workflow_dispatch:
+
+jobs:
+  publish:
+    name: Build and publish to npm
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: Install dependencies
+        run: npm ci --workspace=@downlink/synthetics --include-workspace-root
+
+      - name: Build
+        run: npm run build -w @downlink/synthetics
+
+      - name: Test
+        run: npm test -w @downlink/synthetics
+
+      - name: Set version from tag
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          TAG="${{ github.ref_name }}"
+          VERSION="${TAG#synthetics-v}"
+          npm version "$VERSION" --workspace=@downlink/synthetics --no-git-tag-version
+
+      - name: Publish
+        run: npm publish --workspace=@downlink/synthetics
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
