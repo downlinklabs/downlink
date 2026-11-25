@@ -17,22 +17,15 @@ downlink is installed into your Kubernetes cluster using Helm. The chart deploys
 
 <Steps>
 
-1. **Add the Helm repository**
+1. **Install the chart**
 
    ```bash
-   helm repo add downlink https://downlinklabs.github.io/downlink
-   helm repo update
-   ```
-
-2. **Install the chart**
-
-   ```bash
-   helm install downlink downlink/downlink \
+   helm install downlink oci://ghcr.io/downlinklabs/charts/downlink \
      --namespace downlink \
      --create-namespace
    ```
 
-3. **Verify the operator is running**
+2. **Verify the operator is running**
 
    ```bash
    kubectl get pods -n downlink
@@ -103,12 +96,6 @@ Add `@downlink/synthetics` to your test project:
     ```
   </TabItem>
 </Tabs>
-
-The package is published to the GitHub Package Registry. Configure npm to resolve `@downlink` packages from GitHub:
-
-```bash
-echo "@downlink:registry=https://npm.pkg.github.com" >> .npmrc
-```
 
 ## Next steps
 
