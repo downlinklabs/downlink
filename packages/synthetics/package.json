@@ -12,6 +12,11 @@
       "default": "./dist/reporter/index.js"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/downlinklabs/downlink",
+    "directory": "packages/synthetics"
+  },
   "scripts": {
     "build": "tsc",
     "test": "vitest run"
