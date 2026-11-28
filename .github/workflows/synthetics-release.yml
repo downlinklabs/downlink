@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v4
 
@@ -37,6 +38,4 @@ jobs:
           npm version "$VERSION" --workspace=@downlink/synthetics --no-git-tag-version
 
       - name: Publish
-        run: npm publish --workspace=@downlink/synthetics
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --workspace=@downlink/synthetics --provenance
