@@ -38,4 +38,4 @@ jobs:
           npm version "$VERSION" --workspace=@downlink/synthetics --no-git-tag-version
 
       - name: Publish
-        run: npm publish --workspace=@downlink/synthetics --provenance
+        run: npm stage publish --workspace=@downlink/synthetics --provenance
