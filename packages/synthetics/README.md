@@ -1,6 +1,6 @@
 # @downlink/synthetics
 
-Playwright reporter plugin for [Downlink](https://downlinklabs.io) — automatically emits Prometheus metrics for every test and step with zero instrumentation code in your test files.
+Playwright reporter plugin for [Downlink](https://docs.downlinklabs.io) — automatically emits Prometheus metrics for every test and step with zero instrumentation code in your test files.
 
 ## Installation
 
@@ -16,9 +16,7 @@ Add the reporter to your `playwright.config.ts`:
 import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
-  reporter: [
-    ["@downlink/synthetics/reporter"],
-  ],
+  reporter: [["@downlink/synthetics/reporter"]],
 });
 ```
 
@@ -32,28 +30,32 @@ PUSHGATEWAY_URL=http://localhost:9091 npx playwright test
 
 ```ts
 reporter: [
-  ["@downlink/synthetics/reporter", {
-    pushgatewayUrl: "http://pushgateway.monitoring.svc:9091",
-    jobName: "my-app-synthetics",
-  }],
-]
+  [
+    "@downlink/synthetics/reporter",
+    {
+      pushgatewayUrl: "http://pushgateway.monitoring.svc:9091",
+      jobName: "my-app-synthetics",
+    },
+  ],
+];
 ```
 
-| Option | Environment variable | Default |
-|---|---|---|
-| `pushgatewayUrl` | `PUSHGATEWAY_URL` | — |
-| `jobName` | — | `"synthetic-tests"` |
+| Option           | Environment variable | Default             |
+| ---------------- | -------------------- | ------------------- |
+| `pushgatewayUrl` | `PUSHGATEWAY_URL`    | —                   |
+| `jobName`        | —                    | `"synthetic-tests"` |
 
 If neither `pushgatewayUrl` nor `PUSHGATEWAY_URL` is set, the reporter runs but skips the push step — useful for local test runs where you don't have a Pushgateway.
 
 ## Metrics
 
-| Metric | Type | Labels |
-|---|---|---|
-| `synthetic_test_duration_seconds` | Histogram | `test_suite`, `test_name`, `status`, `environment` |
+| Metric                            | Type      | Labels                                                          |
+| --------------------------------- | --------- | --------------------------------------------------------------- |
+| `synthetic_test_duration_seconds` | Histogram | `test_suite`, `test_name`, `status`, `environment`              |
 | `synthetic_step_duration_seconds` | Histogram | `test_suite`, `test_name`, `step_name`, `status`, `environment` |
 
 **Labels:**
+
 - `test_suite` — the `describe` block title, or the filename if no `describe` block is used
 - `test_name` — the `test()` title
 - `step_name` — the `test.step()` title (step metric only)
